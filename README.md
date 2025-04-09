@@ -31,13 +31,15 @@ This is the backend for the ClipURL application, a URL shortening service with a
 2. **Install Dependencies**
    ```bash
     npm install
+
+1. **Configure Environment Variables: Create a .env file in the server/ directory:**:
+   ```bash
+    MONGODB_URI=mongodb://localhost:27017/clipurl
+    JWT_SECRET=your_secret_key_here
+    PORT=5000
    
-3.**Configure Environment Variables: Create a .env file in the server/ directory:**
-   MONGODB_URI=mongodb://localhost:27017/clipurl
-   JWT_SECRET=your_secret_key_here
-   PORT=5000
+2. **Start the server**
+   ```bash
+    npm start
    
-4.**Start the server**
-   npm start
-   
-**Backend has been eployed on render **
+**Backend has been eployed on render standalone due to fallback issues **
