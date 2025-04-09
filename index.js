@@ -2,7 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import bcrypt from 'bcryptjs';
-import 'dotenv/config'; // Corrected here
+import 'dotenv/config';
 import User from './models/User.js';
 import authRoutes from './routes/auth.js';
 import linksRoutes from './routes/links.js';
@@ -10,7 +10,12 @@ import redirectRoutes from './routes/redirect.js';
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin: ['http://localhost:5173'], // ← your frontend URLs
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
+}));
 app.use(express.json());
 
 app.use('/api/auth', authRoutes);
