@@ -1,0 +1,34 @@
+import express from 'express';
+import mongoose from 'mongoose';
+import cors from 'cors';
+import bcrypt from 'bcryptjs';
+import 'dotenv/config'; // Corrected here
+import User from './models/User.js';
+import authRoutes from './routes/auth.js';
+import linksRoutes from './routes/links.js';
+import redirectRoutes from './routes/redirect.js';
+
+const app = express();
+
+app.use(cors());
+app.use(express.json());
+
+app.use('/api/auth', authRoutes);
+app.use('/api/links', linksRoutes);
+app.use('/', redirectRoutes);
+
+mongoose.connect(process.env.MONGODB_URI)
+  .then(async () => {
+    const existingUser = await User.findOne({ email: 'intern@dacoid.com' });
+    if (!existingUser) {
+      const hashedPassword = await bcrypt.hash('Test123', 10);
+      await User.create({ email: 'intern@dacoid.com', password: hashedPassword });
+      console.log('Hardcoded user created: intern@dacoid.com / Test123');
+    }
+
+    const PORT = process.env.PORT || 5000;
+    app.listen(PORT, '0.0.0.0', () => {
+      console.log(`Server running on http://0.0.0.0:${PORT}`);
+    });
+  })
+  .catch((err) => console.error('MongoDB connection error:', err));
